@@ -1,12 +1,12 @@
 package model
 
 import (
-	"time"
 	"gorm.io/gorm"
+	"time"
 )
 
 type BaseModel struct {
-	ID       int32 `gorm:"primarykey"`
+	ID        int32     `gorm:"primarykey"`
 	CreatedAt time.Time `gorm:"column:add_time"`
 	UpdatedAt time.Time `gorm:"column:update_time"`
 	DeletedAt gorm.DeletedAt
@@ -15,10 +15,10 @@ type BaseModel struct {
 
 type User struct {
 	BaseModel
-	Mobile string `gorm:"index:idx_mobile;unique;type:varchar(11);not null"`
-	Password string `gorm:"type:varchar(100);not null"`
-	NickName string `gorm:"type:varchar(20)"`
+	Mobile   string     `gorm:"index:idx_mobile;unique;type:varchar(11);not null"`
+	Password string     `gorm:"type:varchar(100);not null"`
+	NickName string     `gorm:"type:varchar(20)"`
 	Birthday *time.Time `gorm:"type:datetime"`
-	Gender string `gorm:"column:gender;default:mal;type:varchar(6) comment 'female表示女，male标识男'"`
-	Role int `gorm:"column:role;default:1;type:int comment '1标识普通用户，2标识管理员用户'"`
+	Gender   string     `gorm:"column:gender;default:mal;type:varchar(6) comment 'female表示女，male标识男'"`
+	Role     int        `gorm:"column:role;default:1;type:int comment '1标识普通用户，2标识管理员用户'"`
 }

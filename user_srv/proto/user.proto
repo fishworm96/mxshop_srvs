@@ -4,9 +4,9 @@ option go_package = ".;proto";
 
 service User {
   rpc GetUserList(PageInfo) returns (UserListResponse); // 用户列表
-  rpc GetUserByMobile(MobileRequest) returns (UserInfoRespose); // 通过mobile查询用户
-  rpc GetUserById(IdRequest) returns (UserInfoRespose); // 通过id查询用户
-  rpc CreateUser(CreateUserInfo) returns (UserInfoRespose); // 添加用户
+  rpc GetUserByMobile(MobileRequest) returns (UserInfoResponse); // 通过mobile查询用户
+  rpc GetUserById(IdRequest) returns (UserInfoResponse); // 通过id查询用户
+  rpc CreateUser(CreateUserInfo) returns (UserInfoResponse); // 添加用户
   rpc updateUser(UpdateUserInfo) returns (google.protobuf.Empty); // 更新用户
   rpc CheckPassWord(PasswordCheckInfo) returns (CheckResponse); // 检查密码
 }
@@ -46,7 +46,7 @@ message UpdateUserInfo {
   uint64 birthDay = 4;
 }
 
-message UserInfoRespose {
+message UserInfoResponse {
   int32 id = 1;
   string password = 2;
   string mobile = 3;
@@ -58,5 +58,5 @@ message UserInfoRespose {
 
 message UserListResponse {
   int32 total = 1;
-  repeated userInfoRespose data = 2;
+  repeated UserInfoResponse data = 2;
 }

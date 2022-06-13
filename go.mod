@@ -6,7 +6,9 @@ require gorm.io/gorm v1.23.6
 
 require (
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
+	google.golang.org/protobuf v1.28.0 // indirect
 )
 
 require (

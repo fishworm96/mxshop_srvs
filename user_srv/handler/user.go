@@ -18,8 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserServer struct {
-}
+type UserServer struct {}
 
 // 返回信息
 func ModelToResponse(user model.User) proto.UserInfoResponse {
@@ -141,7 +140,7 @@ func (s *UserServer) UpdateUser(ctx context.Context, req *proto.UpdateUserInfo) 
 	user.Birthday = &birthDay
 	user.Gender = req.Gender
 
-	result = global.DB.Save(user)
+	result = global.DB.Save(&user)
 	if result.Error != nil {
 		return nil, status.Errorf(codes.Internal, result.Error.Error())
 	}
@@ -155,3 +154,5 @@ func (s *UserServer) CheckPassWord(ctx context.Context, req *proto.PasswordCheck
 	check := password.Verify(req.Password, passwordInfo[2], passwordInfo[3], options)
 	return &proto.CheckResponse{Success: check}, nil
 }
+
+func (*UserServer) mustEmbedUnimplementedUserServer() {}

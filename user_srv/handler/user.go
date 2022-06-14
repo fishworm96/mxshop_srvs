@@ -7,10 +7,14 @@ import (
 	"mxshop_srvs/user_srv/global"
 	"mxshop_srvs/user_srv/model"
 	"mxshop_srvs/user_srv/proto"
+	"strings"
+	"time"
 
 	"github.com/anaskhan96/go-password-encoder"
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"gorm.io/gorm"
 )
 
@@ -100,7 +104,7 @@ func (s *UserServer) GetUserById(ctx context.Context, req *proto.IdRequest) (*pr
 	return &userInfoRsp, nil
 }
 
-func (s *UserServer) 	CreateUser(ctx context.Context, req *proto.CreateUserInfo) (*proto.UserInfoResponse, error) {
+func (s *UserServer) CreateUser(ctx context.Context, req *proto.CreateUserInfo) (*proto.UserInfoResponse, error) {
 	// 新建用户
 	var user model.User
 	result := global.DB.Where(&model.User{Mobile: req.Mobile}).First(&user)
@@ -122,4 +126,32 @@ func (s *UserServer) 	CreateUser(ctx context.Context, req *proto.CreateUserInfo)
 
 	userInfoRsp := ModelToResponse((user))
 	return &userInfoRsp, nil
+}
+
+func (s *UserServer) UpdateUser(ctx context.Context, req *proto.UpdateUserInfo) (*empty.Empty, error) {
+	// 个人中心更新用户
+	var user model.User
+	result := global.DB.First(&user, req.Id)
+	if result.RowsAffected == 0 {
+		return nil, status.Errorf(codes.NotFound, "用户不存在")
+	}
+
+	birthDay := time.Unix(int64(req.BirthDay), 0)
+	user.NickName = req.NickName
+	user.Birthday = &birthDay
+	user.Gender = req.Gender
+
+	result = global.DB.Save(user)
+	if result.Error != nil {
+		return nil, status.Errorf(codes.Internal, result.Error.Error())
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *UserServer) CheckPassWord(ctx context.Context, req *proto.PasswordCheckInfo) (*proto.CheckResponse, error) {
+	// 校验密码
+	options := &password.Options{16, 100, 32, sha512.New}
+	passwordInfo := strings.Split(req.EncryptedPassword, "$")
+	check := password.Verify(req.Password, passwordInfo[2], passwordInfo[3], options)
+	return &proto.CheckResponse{Success: check}, nil
 }

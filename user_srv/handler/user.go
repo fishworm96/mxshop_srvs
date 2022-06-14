@@ -122,7 +122,7 @@ func (s *UserServer) CreateUser(ctx context.Context, req *proto.CreateUserInfo) 
 	if result.Error != nil {
 		return nil, status.Errorf(codes.Internal, result.Error.Error())
 	}
-
+	
 	userInfoRsp := ModelToResponse((user))
 	return &userInfoRsp, nil
 }

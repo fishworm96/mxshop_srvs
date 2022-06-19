@@ -57,7 +57,7 @@ func TestCreateUser() {
 
 func main() {
 	Init()
-	TestCreateUser()
-	// TestGetUserList()
+	// TestCreateUser()
+	TestGetUserList()
 	conn.Close()
 }

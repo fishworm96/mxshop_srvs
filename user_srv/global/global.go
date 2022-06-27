@@ -2,6 +2,7 @@ package global
 
 import (
 	"log"
+	"mxshop_srvs/user_srv/config"
 	"os"
 	"time"
 
@@ -11,10 +12,13 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-var DB *gorm.DB
+var (
+	DB *gorm.DB
+	ServerConfig config.ServerConfig
+)
 
 func init() {
-	dsn := "root:root@tcp(localhost:3306)/mxshop_user_srv?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:@tcp(localhost:3306)/mxshop_user_srv?charset=utf8mb4&parseTime=True&loc=Local"
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags),

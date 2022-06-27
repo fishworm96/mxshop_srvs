@@ -1,8 +1,10 @@
-package global
+package initialize
 
 import (
+	"fmt"
 	"log"
 	"mxshop_srvs/user_srv/config"
+	"mxshop_srvs/user_srv/global"
 	"os"
 	"time"
 
@@ -17,8 +19,9 @@ var (
 	ServerConfig config.ServerConfig
 )
 
-func init() {
-	dsn := "root:@tcp(localhost:3306)/mxshop_user_srv?charset=utf8mb4&parseTime=True&loc=Local"
+func InitDB() {
+	c := global.ServerConfig.MysqlInfo
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", c.User, c.Password, c.Host, c.Port, c.Name)
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -31,7 +34,7 @@ func init() {
 
 	// 全局模式
 	var err error
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	global.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},

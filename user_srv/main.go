@@ -45,7 +45,7 @@ func main() {
 
 	client, err := api.NewClient(cfg)
 	check := &api.AgentServiceCheck{
-		GRPC: fmt.Sprintf("192.168.0.103:50051"),
+		GRPC: fmt.Sprintf("192.168.0.101:50051"),
 		Timeout: "5s",
 		Interval: "5s",
 		DeregisterCriticalServiceAfter: "10s",
@@ -57,7 +57,7 @@ func main() {
 	registration.ID = global.ServerConfig.Name
 	registration.Port = *Port
 	registration.Tags = []string{"imooc", "user", "srv"}
-	registration.Address = "192.168.0.103"
+	registration.Address = "192.168.0.101"
 	registration.Check = check
 
 	err = client.Agent().ServiceRegister(registration)

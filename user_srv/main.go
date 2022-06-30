@@ -9,17 +9,18 @@ import (
 	"mxshop_srvs/user_srv/handler"
 	"mxshop_srvs/user_srv/initialize"
 	"mxshop_srvs/user_srv/proto"
+	"mxshop_srvs/user_srv/utils"
 
+	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"github.com/hashicorp/consul/api"
 )
 
 func main() {
 	IP := flag.String("ip", "0.0.0.0", "ip地址")
-	Port := flag.Int("prot", 50051, "端口号")
+	Port := flag.Int("prot", 0, "端口号")
 
 	initialize.InitLogger()
 	initialize.InitConfig()
@@ -28,6 +29,10 @@ func main() {
 
 	flag.Parse()
 	zap.S().Info("ip：", *IP)
+	if *Port == 0 {
+		*Port, _ = utils.GetFreePort()
+	}
+
 	zap.S().Info("port：", *Port)
 
 	server := grpc.NewServer()
@@ -45,7 +50,7 @@ func main() {
 
 	client, err := api.NewClient(cfg)
 	check := &api.AgentServiceCheck{
-		GRPC: fmt.Sprintf("192.168.0.101:50051"),
+		GRPC: fmt.Sprintf("192.168.0.101:%d", *Port),
 		Timeout: "5s",
 		Interval: "5s",
 		DeregisterCriticalServiceAfter: "10s",

@@ -46,6 +46,7 @@ require (
 	github.com/hashicorp/consul/api v1.13.0
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.4 // indirect
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.12.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4 // indirect

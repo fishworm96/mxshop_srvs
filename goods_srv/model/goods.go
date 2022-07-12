@@ -37,8 +37,8 @@ func (GoodsCategoryBrand) TableName() string {
 // 轮播图表
 type Banner struct {
 	BaseModel
-	Image string `gorm:"type:varchar(200);not null"`
-	Url string `gorm:"type:varcahr(200);not null"`
+	Image string `gorm:"type:varchar(200);not null;"`
+	Url string `gorm:"type:varchar(200);not null"`
 	Index int32 `gorm:"type:int;default:1;not null"`
 }
 

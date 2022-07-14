@@ -5,12 +5,13 @@ package model
 // 分类表
 type Category struct {
 	BaseModel
-	Name string `gorm:"type:varchar(20);not null;comment:'商品名称'"`
+	Name string `gorm:"type:varchar(20);not null;comment:'商品名称' json:"name""`
 	// 在类型转换中经常要用int32或者int64为了方便定义为int32
-	ParentCategoryID int32     `gorm:"comment:'自关联id'"`
-	ParentCategory   *Category `gorm:"comment:'自关联商品'"`
-	Level            int32     `gorm:"type:int;not null;default:1;comment:'1代表1级类目，2代表二级类目，3代表三级类目'"`
-	IsTab            bool      `gorm:"default:false;not null;comment:'是否在tab栏展示'"`
+	ParentCategoryID int32     `gorm:"comment:'自关联id'" json:"parent"`
+	ParentCategory   *Category `gorm:"comment:'自关联商品'" json:"-"`
+	SubCategory []*Category `gorm:"foreignKey: ParentCategoryID;references:ID" json:"sub_category"`
+	Level            int32     `gorm:"type:int;not null;default:1;comment:'1代表1级类目，2代表二级类目，3代表三级类目'" json:"level"`
+	IsTab            bool      `gorm:"default:false;not null;comment:'是否在tab栏展示'" json:"is_tab"`
 }
 
 // 品牌表

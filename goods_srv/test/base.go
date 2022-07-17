@@ -18,6 +18,7 @@ func Init() {
 func main() {
 	Init()
 	// TestGetBrandList()
-	TestGetCategoryList()
+	// TestGetCategoryList()
+	TestGetSubCategoryList()
 	conn.Close()
 }
